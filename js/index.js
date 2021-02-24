@@ -55,14 +55,15 @@ const pacientes = [
   }
 ];
 
-console.log(filtrarPacientes(pacientes));
-
 function filtrarPacientes(pacientes) {
   const pacientesFiltrados = {};
   pacientesFiltrados.nPacientes = pacientes.length;
-  pacientesFiltrados.nMayoresEdad = pacientes.filter(x => x.paciente.edad >= 18).length;
-  pacientesFiltrados.nHombresDiabeticos = pacientes.filter(x => x.dieta === "Diabetes").length;
-  pacientesFiltrados.totalDiasIngreso = pacientes.diasIngresado;
-
+  pacientesFiltrados.nMayoresEdad = pacientes.filter(paciente => paciente.paciente.edad >= 18).length;
+  pacientesFiltrados.nHombresDiabeticos = pacientes.filter(paciente => paciente.dieta === "Diabetes" && paciente.paciente.sexo === "H").length;
+  pacientesFiltrados.totalDiasIngreso = pacientes.reduce((acc, paciente) => acc + paciente.diasIngresado, 0);
+  const pacientesMujeres = pacientes.filter(paciente => paciente.paciente.sexo === "M");
+  pacientesFiltrados.mediaEdadMujeres = pacientesMujeres.reduce((acc, paciente) => acc + paciente.paciente.edad, 0) / pacientesMujeres.length;
   return pacientesFiltrados;
 }
+
+console.log(filtrarPacientes(pacientes));
